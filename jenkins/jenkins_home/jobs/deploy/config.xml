@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.12.2">
+  <actions/>
+  <description>デプロイします。</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_REPOSITORY</name>
+          <description></description>
+          <defaultValue>git@github.com:a/a.git</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_BRANCH</name>
+          <description></description>
+          <defaultValue>develop</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>TARGET_HOST</name>
+          <description></description>
+          <defaultValue>dev</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.43">
+    <script>def imageName = &quot;${JOB_NAME}-composer-${BUILD_ID}&quot;
+      def deployPath = &quot;/home/xxxx/hoge&quot;
+node {
+    try {
+        stage(&apos;チェックアウト&apos;) {
+            git url: GIT_REPOSITORY, branch:GIT_BRANCH
+        }
+        stage(&apos;ビルド&apos;) {
+            docker.build(imageName, &quot;./php&quot;).inside() {
+                sh &quot; composer install&quot;
+            }
+        }
+        stage(&apos;転送&apos;) {
+            sh &quot;rsync -az --exclude &apos;.env&apos; --exclude &apos;rdb_data&apos; --delete ./ ${TARGET_HOST}:${deployPath}&quot;
+        }
+        stage(&apos;デプロイ&apos;) {
+            def cmd = &quot;cd ${deployPath} &amp;&amp; sudo docker-compose up -d --build&quot;
+            sh &quot;ssh ${TARGET_HOST} &apos;${cmd}&apos;&quot;
+        }
+    } catch(e) {
+        throw e
+    }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

@@ -1,0 +1,6 @@
+.DS_Store
+.vagrant
+.env
+
+jenkins/.ssh/id_rsa
+jenkins/.ssh/id_rsa.pub
