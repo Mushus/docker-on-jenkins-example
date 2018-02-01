@@ -25,7 +25,21 @@ sudo docker-compose up -d
 
 ### Q. Jenkins で SSH したい
 
-A. `/jenkins/.ssh/` の情報を使ってsshします。
+認証情報を追加します。  
+/jenkins/key ディレクトリに鍵を作っておけば /root/keys の中に鍵が作られます。
+その鍵をjenkinsに指定します
+
+pipelineは以下の書き方で通ります
+
+```
+sshagent(credentials: ['crediential-id']) {
+  sh "ssh -e o StrictHostKeyChecking=no xxx@xxx"
+  sh "rsync -aze \"ssh -o StrictHostKeyChecking=no\" ./ xxx@xxx:~/xxxx"
+}
+```
+
+`known_hosts` が毎回初期化されてしまって、確認求められて失敗する。
+それを回避すると次はなりすましされる可能性があるのは現在対応考え中…。
 
 ### Q. ユーザー情報を追加したい
 

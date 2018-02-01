@@ -2,5 +2,5 @@
 .vagrant
 .env
 
-jenkins/.ssh/id_rsa
-jenkins/.ssh/id_rsa.pub
+jenkins/keys/id_rsa
+jenkins/keys/id_rsa.pub
