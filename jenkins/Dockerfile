@@ -13,3 +13,6 @@ RUN apk upgrade --update && \
 COPY keys /root/keys
 RUN chmod 700 /root/keys && chmod 600 /root/keys/*
 
+# github.com を known_hostsに書き込む
+# なりすましに弱いかもしれないが一旦この方法で
+RUN ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
