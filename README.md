@@ -49,3 +49,5 @@ A. デフォルトユーザーの ID/PASS は今のところ `docker-compose.yam
 ### Q. プラグインを管理したい
 
 A. `/jenkins/jenkins_home/init.groovy.d/setup-plugins.groovy` をカスタマイズします。
+
+ID は[こちら](https://plugins.jenkins.io/)を参照
