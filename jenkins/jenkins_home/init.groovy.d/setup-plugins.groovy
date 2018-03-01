@@ -1,7 +1,7 @@
 import jenkins.model.*
 
 def instance  = Jenkins.getInstance()
-def plugins   = ["git", "workflow-aggregator", "ldap", "ssh-agent", "throttle-concurrents", "slack"]
+def plugins   = ["matrix-auth", "git", "workflow-aggregator", "ldap", "ssh-agent", "throttle-concurrents", "slack"]
 
 pm = instance.getPluginManager()
 uc = instance.getUpdateCenter()
