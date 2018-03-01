@@ -17,6 +17,9 @@ CIサーバーの構成管理
 # キーを作ります
 ssh-keygen -t rsa -f ./jenkins/keys/id_rsa -N ""
 
+# Dockerのコンテナに合わせて権限をrootに設定する
+sudo chown -R ./jenkins/jenkins_home
+
 # jenkinsを立てます
 sudo docker-compose up -d
 ```
