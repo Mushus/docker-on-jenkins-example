@@ -82,7 +82,7 @@ def strategy = new GlobalMatrixAuthorizationStrategy()
 // strategy.add(hudson.model.Item.READ,'anonymous')
 
 // Setting Admin Permissions
-strategy.add(Jenkins.ADMINISTER, "admin")
+strategy.add(Jenkins.ADMINISTER, adminUsername)
 
 // Setting easy settings for local builds
 def local = System.getenv("BUILD").toString()
